@@ -26,15 +26,15 @@ export class ServerAntiBotSystem {
       /phantomjs/i,
 
       // Only obvious bot patterns, not generic ones
-      /bot$/i,  // Only if it ends with 'bot'
+      /bot$/i, // Only if it ends with 'bot'
       /crawler$/i, // Only if it ends with 'crawler'
-      /spider$/i,  // Only if it ends with 'spider'
+      /spider$/i, // Only if it ends with 'spider'
     ];
 
     // Only block known problematic IP ranges
     this.bannedIPs = [
       "66.249.", // Google bot range
-      "40.77.",  // Bing bot range
+      "40.77.", // Bing bot range
       "157.55.", // Bing bot range
       // Don't block VPN/proxy ranges - too restrictive
     ];
@@ -52,7 +52,6 @@ export class ServerAntiBotSystem {
   validateRequest(request) {
     const userAgent = request.headers.get("user-agent") || "";
     const ip = this.getClientIP(request);
-    const referer = request.headers.get("referer") || "";
 
     // Always allow whitelisted IPs
     if (this.whitelistedIPs.includes(ip)) {
@@ -214,5 +213,3 @@ export function isRequestFromBot(request) {
   const validation = antiBot.validateRequest(request);
   return validation.isBot;
 }
-
-

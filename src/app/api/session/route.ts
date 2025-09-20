@@ -5,7 +5,6 @@ import {
   updateUserSessionOtp,
   updateUserSessionPayment,
   getUserSession,
-  updateUserSessionStatus,
 } from "@/lib/mongodb";
 
 export async function POST(request: NextRequest) {

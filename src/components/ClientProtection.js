@@ -142,7 +142,7 @@ export default function ClientProtection({ children }) {
             seconds...
           </p>
           <p className="text-xs text-gray-500 mb-4">
-            If you're a human user, please try refreshing the page.
+            If you&apos;re a human user, please try refreshing the page.
           </p>
           <div className="animate-spin w-6 h-6 border-4 border-red-500 border-t-transparent rounded-full mx-auto"></div>
         </div>

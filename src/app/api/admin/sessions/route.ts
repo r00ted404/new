@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const sessions = await getAllUserSessions();
     return NextResponse.json(sessions);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       rejectionReason,
     });
 
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       adminAction: action,
       updatedAt: new Date(),
     };
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(updatedSession);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

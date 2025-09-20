@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 // Advanced Anti-Bot Protection System - LOOSE VERSION for real users
 export class AntiBotSystem {
@@ -36,19 +36,19 @@ export class AntiBotSystem {
     try {
       // Only load essential bot patterns - keep it minimal
       this.bannedUserAgents = [
-        'googlebot',
-        'bingbot',
-        'curl',
-        'wget',
-        'python-requests',
-        'scrapy',
-        'selenium',
-        'phantomjs'
+        "googlebot",
+        "bingbot",
+        "curl",
+        "wget",
+        "python-requests",
+        "scrapy",
+        "selenium",
+        "phantomjs",
       ];
-      
+
       this.bannedIPs = [
-        '66.249.', // Google bots
-        '40.77.',  // Bing bots
+        "66.249.", // Google bots
+        "40.77.", // Bing bots
       ];
     } catch (error) {
       console.error("Failed to load anti-bot lists:", error);
@@ -96,7 +96,7 @@ export class AntiBotSystem {
       return debugInfo
         ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
         : "webgl-available";
-    } catch (e) {
+    } catch {
       return "webgl-error";
     }
   }
@@ -180,11 +180,7 @@ export class AntiBotSystem {
     }
 
     // Be more lenient with other patterns
-    const minorBotPatterns = [
-      /bot/i,
-      /crawler/i,
-      /spider/i,
-    ];
+    const minorBotPatterns = [/bot/i, /crawler/i, /spider/i];
 
     if (minorBotPatterns.some((pattern) => pattern.test(userAgent))) {
       this.suspiciousActivity += 3; // Lower score, might be false positive
@@ -199,7 +195,7 @@ export class AntiBotSystem {
     if (window.navigator.webdriver) automationScore += 5;
     if (window.callPhantom) automationScore += 5;
     if (window._phantom) automationScore += 5;
-    
+
     // Be more lenient with Node.js indicators (might be legitimate)
     if (window.Buffer) automationScore += 1;
     if (window.process) automationScore += 1;
@@ -227,22 +223,26 @@ export class AntiBotSystem {
     // Only flag if REALLY suspicious behavior
 
     // Mouse movement - only flag if NO movement for very long time
-    if (this.mouseMovements.length === 0 && timeSpent > 120000) { // 2 minutes
+    if (this.mouseMovements.length === 0 && timeSpent > 120000) {
+      // 2 minutes
       this.suspiciousActivity += 2;
     }
 
     // Click patterns - only flag if NO clicks for very long time
-    if (this.clickCount === 0 && timeSpent > 180000) { // 3 minutes
+    if (this.clickCount === 0 && timeSpent > 180000) {
+      // 3 minutes
       this.suspiciousActivity += 1;
     }
 
     // Scroll behavior - only flag if NO scroll for very long time
-    if (this.scrollCount === 0 && timeSpent > 240000) { // 4 minutes
+    if (this.scrollCount === 0 && timeSpent > 240000) {
+      // 4 minutes
       this.suspiciousActivity += 1;
     }
 
     // Final decision - much higher threshold
-    if (this.suspiciousActivity >= 20) { // Increased from 10 to 20
+    if (this.suspiciousActivity >= 20) {
+      // Increased from 10 to 20
       this.flagAsBot("Highly suspicious behavior pattern");
     }
   }
@@ -255,7 +255,11 @@ export class AntiBotSystem {
 
     // Instead of immediate redirect, give a chance
     setTimeout(() => {
-      if (confirm("We detected unusual activity. Are you a human user? Click OK to continue.")) {
+      if (
+        confirm(
+          "We detected unusual activity. Are you a human user? Click OK to continue."
+        )
+      ) {
         this.isBot = false; // Give them a second chance
         this.suspiciousActivity = 0;
         console.log("User confirmed human status - allowing access");
@@ -289,10 +293,14 @@ export const useAntiBot = () => {
       try {
         // Check for testing mode first
         const whitelistKey = localStorage.getItem("antibot_whitelist_key");
-        if (whitelistKey === "ALLOW_TESTING_ACCESS_2024" || 
-            window.location.hostname === "localhost" ||
-            window.location.hostname === "127.0.0.1") {
-          console.log("🧪 Testing mode or localhost - bypassing anti-bot checks");
+        if (
+          whitelistKey === "ALLOW_TESTING_ACCESS_2024" ||
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1"
+        ) {
+          console.log(
+            "🧪 Testing mode or localhost - bypassing anti-bot checks"
+          );
           setIsProtected(true);
           setIsBot(false);
           setLoading(false);
@@ -336,13 +344,13 @@ export const useAdvancedProtection = () => {
     // Skip most advanced protections to avoid blocking real users
     // Only keep basic event listeners without blocking functionality
 
-    const handleContextMenu = (e) => {
+    const handleContextMenu = () => {
       // Allow right-click in loose mode
       // e.preventDefault();
       // return false;
     };
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = () => {
       // Allow all keyboard shortcuts in loose mode
       // if (e.key === "F12" || ...) {
       //   e.preventDefault();
@@ -363,5 +371,3 @@ export const useAdvancedProtection = () => {
 
   return protectionActive;
 };
-
-

