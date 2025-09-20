@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     }
 
     if (session && isLogin) {
-      const url = new URL("/admin", request.url);
+      const url = new URL("/admin/crm", request.url);
       return NextResponse.redirect(url);
     }
   }
@@ -25,5 +25,3 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/admin/:path*"],
 };
-
-
